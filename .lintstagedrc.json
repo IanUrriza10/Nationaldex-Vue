@@ -1,0 +1,6 @@
+{
+    "*.{vue}": [
+        "prettier --write",
+        "eslint"
+    ]
+}
