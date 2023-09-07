@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
+// import HelloWorld from "./components/HelloWorld.vue";
 </script>
 
 <template>
-	<div>
+	<!-- <div>
 		<a
 			href="https://vitejs.dev"
 			target="_blank"
@@ -27,7 +27,9 @@ import HelloWorld from "./components/HelloWorld.vue";
 			/>
 		</a>
 	</div>
-	<HelloWorld msg="Vite + Vue" />
+	<HelloWorld msg="Vite + Vue" /> -->
+
+	<router-view></router-view>
 </template>
 
 <style scoped>
