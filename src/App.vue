@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import HelloWorld from "./components/HelloWorld.vue";
+import HelloWorld from "@/components/HelloWorld.vue";
 </script>
 
 <template>
@@ -26,8 +26,8 @@
 				alt="Vue logo"
 			/>
 		</a>
-	</div>
-	<HelloWorld msg="Vite + Vue" /> -->
+	</div> -->
+	<HelloWorld msg="Vite + Vue" />
 
 	<router-view></router-view>
 </template>
