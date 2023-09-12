@@ -10,4 +10,11 @@ export default defineConfig({
 			"@": join(__dirname, "src"),
 		},
 	},
+	css: {
+		preprocessorOptions: {
+			scss: {
+				additionalData: `@import "@/scss/index.scss";`,
+			},
+		},
+	},
 });

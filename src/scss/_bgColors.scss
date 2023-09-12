@@ -1,0 +1,99 @@
+// TYPES
+
+$typeBg: (
+	normal: #{$type-normal},
+	fire: #{$type-fire},
+	water: #{$type-water},
+	grass: #{$type-grass},
+	electric: #{$type-electric},
+	ice: #{$type-ice},
+	fighting: #{$type-fighting},
+	poison: #{$type-poison},
+	ground: #{$type-ground},
+	flying: #{$type-flying},
+	psychic: #{$type-psychic},
+	bug: #{$type-bug},
+	rock: #{$type-rock},
+	ghost: #{$type-ghost},
+	dark: #{$type-dark},
+	dragon: #{$type-dragon},
+	steel: #{$type-steel},
+	fairy: #{$type-fairy},
+);
+
+@each $type, $color in $typeBg {
+	.type-#{$type} {
+		background-color: $color;
+	}
+}
+
+// EGGS
+
+$eggBg: (
+	monster: #{$egg-monster},
+	water1: #{$egg-water1},
+	bug: #{$egg-bug},
+	flying: #{$egg-flying},
+	ground: #{$egg-ground},
+	fairy: #{$egg-fairy},
+	grass: #{$egg-grass},
+	humanshape: #{$egg-humanshape},
+	water3: #{$egg-water3},
+	mineral: #{$egg-mineral},
+	indeterminate: #{$egg-indeterminate},
+	water2: #{$egg-water2},
+	ditto: #{$egg-ditto},
+	dragon: #{$egg-dragon},
+	no-eggs: #{$egg-no-eggs},
+);
+
+@each $egg, $color in $eggBg {
+	.egg-#{$egg} {
+		background-color: $color;
+	}
+}
+
+// GAMES
+$gameBg: (
+	red: #{$game-red},
+	blue: #{$game-blue},
+	yellow: #{$game-yellow},
+	gold: #{$game-gold},
+	silver: #{$game-silver},
+	crystal: #{$game-crystal},
+	ruby: #{$game-ruby},
+	sapphire: #{$game-sapphire},
+	emerald: #{$game-emerald},
+	diamond: #{$game-diamond},
+	pearl: #{$game-pearl},
+	platinum: #{$game-platinum},
+	black: #{$game-black},
+	white: #{$game-white},
+	x: #{$game-x},
+	y: #{$game-y},
+	sun: #{$game-sun},
+	moon: #{$game-moon},
+	sword: #{$game-sword},
+	shield: #{$game-shield},
+	scarlet: #{$game-scarlet},
+	violet: #{$game-violet},
+	colosseum: #{$game-colosseum},
+	xd: #{$game-xd},
+	the-isle-of-armor: #{$game-isle},
+	firered: #{$game-fred},
+	leafgreen: #{$game-lgreen},
+	heartgold: #{$game-hgold},
+	soulsilver: #{$game-ssilver},
+	omega-ruby: #{$game-oruby},
+	alpha-sapphire: #{$game-asapphire},
+	black-2: #{$game-black2},
+	white-2: #{$game-white2},
+	ultra-sun: #{$game-usun},
+	ultra-moon: #{$game-umoon},
+	lets-go-pikachu: #{$game-pikachu},
+	lets-go-eevee: #{$game-eevee},
+	the-crown-of-tundra: #{$game-crown},
+	brilliant-diamond: #{$game-bdiamond},
+	shining-pearl: #{$game-spearl},
+	legends-arceus: #{$game-arceus},
+);

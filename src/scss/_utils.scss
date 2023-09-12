@@ -1,0 +1,12 @@
+.animate-button {
+	&:hover {
+		transform: translateY(-0.25rem);
+	}
+	&:active {
+		transform: translateY(0.125rem);
+	}
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
