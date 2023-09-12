@@ -10,3 +10,14 @@
 .cursor-pointer {
 	cursor: pointer;
 }
+
+.visible {
+	visibility: visible;
+}
+.invisible {
+	visibility: hidden;
+}
+
+.invertY {
+	transform: scaleY(-1);
+}
