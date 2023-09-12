@@ -9,7 +9,9 @@ document.head.appendChild(title);
 <template>
 	<div class="layout">
 		<PokedexSidebar />
-		<slot></slot>
+		<div class="content">
+			<slot></slot>
+		</div>
 	</div>
 </template>
 
@@ -21,5 +23,12 @@ document.head.appendChild(title);
 	min-height: 100vh;
 	align-items: center;
 	text-align: center;
+}
+.content {
+	width: 60%;
+	background-color: $cardBackground;
+	padding: 1rem;
+	margin-left: auto;
+	margin-right: auto;
 }
 </style>
