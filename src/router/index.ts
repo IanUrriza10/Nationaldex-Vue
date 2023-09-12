@@ -5,7 +5,7 @@ import SubPage from "@/views/SubPage.vue";
 const routes = [
 	{
 		path: "/",
-		name: "Home",
+		name: "Pokemon List",
 		component: MainPage,
 	},
 	{
