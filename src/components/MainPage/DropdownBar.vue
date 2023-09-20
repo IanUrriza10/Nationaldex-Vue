@@ -1,24 +1,36 @@
 import DropdownBar from '@/components/MainPage/DropdownBar.vue';
 <script setup lang="ts">
-defineProps({
+import { ref, computed, PropType } from "vue";
+const props = defineProps({
 	options: {
-		type: Array,
+		type: Array as PropType<Array<{ text: string; value: Object }>>,
 		default: () => [],
 	},
+	modelValue: {
+		types: String,
+		default: 0,
+	},
 });
-const tempOptions = [
-	{ text: "Alphabetical - ASC" },
-	{ text: "Alphabetical - DESC" },
-	{ text: "National Dex # - ASC" },
-	{ text: "National Dex # - DESC" },
-];
-const visibility = false ? "visible" : "invisible";
-const invert = false ? "invertY" : "";
+
+const emits = defineEmits(["update:modelValue"]);
+
+const visibility = ref(false);
+const selected = ref(0);
+const isVisible = computed(() => (visibility.value ? "visible" : "invisible"));
+const invert = computed(() => (visibility.value ? "invertY" : ""));
+
+const handleClick = (index: number) => {
+	selected.value = index;
+	emits("update:modelValue", index);
+};
 </script>
 <template>
 	<div class="dropdown">
-		<div class="dropdown__text">
-			{{ tempOptions[0].text ?? "Dropdown" }}
+		<div
+			class="dropdown__text"
+			@click="visibility = !visibility"
+		>
+			{{ props.options[selected]?.text ?? "Dropdown" }}
 		</div>
 		<img
 			:class="invert"
@@ -28,14 +40,15 @@ const invert = false ? "invertY" : "";
 		/>
 		<div
 			class="dropdown__options"
-			:class="visibility"
+			:class="isVisible"
 		>
 			<div
-				v-for="({ text }, index) in tempOptions"
+				v-for="(option, index) in props.options"
 				v-bind:key="index"
 				class="dropdown__option"
+				@click="handleClick(index)"
 			>
-				{{ text }}
+				{{ option.text }}
 			</div>
 		</div>
 	</div>

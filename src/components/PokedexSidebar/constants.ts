@@ -1,0 +1,56 @@
+export const generation = [
+	"Gen I",
+	"Gen II",
+	"Gen III",
+	"Gen IV",
+	"Gen V",
+	"Gen VI",
+	"Gen VII",
+	"Gen VIII",
+	"Gen IX",
+];
+
+export const eggs = [
+	"monster",
+	"water1",
+	"bug",
+	"flying",
+	"ground",
+	"fairy",
+	"grass",
+	"humanshape",
+	"water3",
+	"mineral",
+	"indeterminate",
+	"water2",
+	"ditto",
+	"dragon",
+	"no-eggs",
+];
+export const types = [
+	"normal",
+	"fighting",
+	"flying",
+	"poison",
+	"ground",
+	"rock",
+	"bug",
+	"ghost",
+	"steel",
+	"fire",
+	"water",
+	"grass",
+	"electric",
+	"psychic",
+	"ice",
+	"dragon",
+	"dark",
+	"fairy",
+];
+
+export const sort = [
+	{ text: "National Dex # - ASC", value: { id: "asc" } },
+	{ text: "National Dex # - DESC", value: { id: "desc" } },
+	{ text: "Alphabetical - ASC", value: { name: "asc" } },
+	{ text: "Alphabetical - DESC", value: { name: "desc" } },
+];

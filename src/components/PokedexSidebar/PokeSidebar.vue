@@ -1,11 +1,28 @@
 <script setup lang="ts">
-import MainOptions from "./MainOptions.vue";
+import { storeToRefs } from "pinia";
 
-const state = {
-	type: "steel",
-	gen: "7",
-	eggGroup: "monster",
+import MainOptions from "./MainOptions.vue";
+import TypeOptions from "./TypeOptions.vue";
+import EggOptions from "./EggOptions.vue";
+import GenOptions from "./GenOptions.vue";
+import { sidebarStore as SidebarStore } from "@/utils/stores/index.ts";
+import { eggs, types } from "./constants.ts";
+import { usePokemonSearch } from "@/composables/usePokemonSearch.ts";
+
+const { search, store } = usePokemonSearch();
+const { setQuery, resetOffset } = store;
+
+const sidebarStore = SidebarStore();
+const { options: window, query: state } = storeToRefs(sidebarStore);
+const { resetQuery } = sidebarStore;
+
+const handleSetQuery = () => {
+	setQuery(state.value);
+	resetOffset();
+	store.resetList();
+	search();
 };
+const handleResetQuery = () => resetQuery();
 </script>
 <template>
 	<div class="sidebar-container">
@@ -14,35 +31,42 @@ const state = {
 				<div class="screen__text">
 					Type:
 					<span class="screen__value">
-						{{ state.type }}
+						{{ types[state.type - 1] ?? "" }}
 					</span>
 				</div>
 				<div class="screen__text">
 					Generation:
 					<span class="screen__value">
-						{{ state.gen }}
+						{{ state.generation > 0 ? state.generation : "" }}
 					</span>
 				</div>
 				<div class="screen__text">
 					Egg Group:
 					<span class="screen__value">
-						{{ state.eggGroup }}
+						{{ eggs[state.eggGroup - 1] ?? "" }}
 					</span>
 				</div>
 			</div>
-			<MainOptions />
-			<!-- <TypeOptions /> -->
-			<!-- <EggOptions /> -->
-			<!-- <GenOptions /> -->
+
+			<MainOptions v-if="window == 0" />
+			<TypeOptions v-if="window == 1" />
+			<GenOptions v-if="window == 2" />
+			<EggOptions v-if="window == 3" />
 			<div class="footer">
-				<div class="action action--submit">
+				<div
+					class="action action--submit"
+					:onclick="handleSetQuery"
+				>
 					<img
 						v-svg-inline
 						src="@/assets/check-bold.svg"
 						alt="submit"
 					/>
 				</div>
-				<div class="action action--action">
+				<div
+					class="action action--action"
+					:onclick="handleResetQuery"
+				>
 					<img
 						v-svg-inline
 						src="@/assets/restore.svg"

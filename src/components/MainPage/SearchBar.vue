@@ -4,13 +4,26 @@ defineProps({
 		type: String,
 		default: "Input",
 	},
+	modelValue: {
+		type: String,
+		default: "",
+	},
 });
+
+const emits = defineEmits(["update:modelValue"]);
 </script>
 <template>
 	<div class="input-container">
 		<input
-			:placeholder="placeholder"
 			id="search"
+			:placeholder="placeholder"
+			:value="modelValue"
+			@input="
+				emits(
+					'update:modelValue',
+					($event.target as HTMLInputElement).value
+				)
+			"
 		/>
 		<img
 			v-svg-inline

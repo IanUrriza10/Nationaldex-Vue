@@ -1,31 +1,39 @@
 <script setup lang="ts">
-const eggs = [
-	"monster",
-	"water1",
-	"bug",
-	"flying",
-	"ground",
-	"fairy",
-	"grass",
-	"humanshape",
-	"water3",
-	"mineral",
-	"indeterminate",
-	"water2",
-	"ditto",
-	"dragon",
-	"no-eggs",
-];
+import { eggs } from "./constants.ts";
+import { sidebarStore as SidebarStore } from "@/utils/stores/index.ts";
+
+const sidebarStore = SidebarStore();
+const { setOptions, setEggGroup } = sidebarStore;
+
+const handleBack = (e: MouseEvent) => {
+	e.preventDefault();
+	setOptions(0);
+};
+
+const handleEggType = (e: MouseEvent) => {
+	e.preventDefault();
+	if (e.target instanceof Element) {
+		const egg = parseInt(e.target.getAttribute("data-value") ?? "0");
+		setEggGroup(egg);
+	}
+};
 </script>
 <template>
 	<div class="selection--egg">
-		<div class="selection__option--back">Egg</div>
+		<div
+			class="selection__option--back"
+			:onclick="handleBack"
+		>
+			Egg
+		</div>
 		<div class="selection--egg__grid">
 			<div
 				v-for="(temp, index) in eggs"
 				:key="index"
 				class="selection__option--egg animate-button"
 				:class="'egg-' + temp"
+				:data-value="index + 1"
+				:onclick="handleEggType"
 			>
 				{{ temp }}
 			</div>
