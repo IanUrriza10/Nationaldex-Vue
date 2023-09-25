@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": " vite build",
     "preview": "vite preview",
-    "lint": "eslint",
-    "vue": "vue-tsc --noEmit",
-    "generate": "graphql-codegen --config codegen.cjs"
+    "lint": "eslint --ext .js,.vue src",
+    "vue": "vue-tsc --noEmit -p tsconfig.json",
+    "generate": "graphql-codegen --config codegen.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.8.3",

@@ -14,7 +14,7 @@ defineProps({
 	<div class="card_container">
 		<CardComponent
 			v-for="pokemon in pokemonList"
-			v-bind:key="pokemon.id"
+			:key="pokemon.id"
 			:item="pokemon"
 		/>
 	</div>

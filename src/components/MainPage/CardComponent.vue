@@ -34,7 +34,7 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 		<div class="card__numbers">
 			<div
 				v-for="number in props.item.pokedexNumbers"
-				v-bind:key="number"
+				:key="number"
 				class="card__numbers__option"
 			>
 				#{{ padDexNumber(number) }}
@@ -42,9 +42,9 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 		</div>
 		<div class="card__types">
 			<TypeComponent
-				class="card__types__option"
 				v-for="type in props.item.types"
-				v-bind:key="type"
+				:key="type"
+				class="card__types__option"
 				:type="type"
 			/>
 		</div>

@@ -7,7 +7,7 @@ const props = defineProps({
 		default: () => [],
 	},
 	modelValue: {
-		types: String,
+		type: Number,
 		default: 0,
 	},
 });
@@ -33,10 +33,10 @@ const handleClick = (index: number) => {
 			{{ props.options[selected]?.text ?? "Dropdown" }}
 		</div>
 		<img
+			v-svg-inline
 			:class="invert"
 			src="@/assets/menu.svg"
 			alt="dropdown"
-			v-svg-inline
 		/>
 		<div
 			class="dropdown__options"
@@ -44,7 +44,7 @@ const handleClick = (index: number) => {
 		>
 			<div
 				v-for="(option, index) in props.options"
-				v-bind:key="index"
+				:key="index"
 				class="dropdown__option"
 				@click="handleClick(index)"
 			>

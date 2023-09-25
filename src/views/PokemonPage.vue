@@ -1,5 +1,5 @@
 <script setup></script>
 
-<template>Subpage</template>
+<template><div class="test"></div></template>
 
 <style scoped></style>

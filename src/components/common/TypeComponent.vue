@@ -3,6 +3,7 @@ const props = defineProps({
 	type: {
 		type: String,
 		placeholder: "Normal",
+		default: "Normal",
 	},
 });
 const { type = "Normal" } = props;
