@@ -1,24 +1,27 @@
 <script setup lang="ts">
-import CardContainer from "@/components/MainPage/CardComponent.vue";
+import CardComponent from "@/components/MainPage/CardComponent.vue";
+import { PropType } from "vue";
+import { PokeCard } from "@/utils/types/mainPage.ts";
+
+defineProps({
+	pokemonList: {
+		type: Array as PropType<PokeCard[]>,
+		default: () => [] as PokeCard[],
+	},
+});
 </script>
 <template>
 	<div class="card_container">
-		<CardContainer />
-		<CardContainer />
-		<CardContainer />
-		<CardContainer />
-		<CardContainer />
-		<CardContainer />
-		<CardContainer />
-		<CardContainer />
-		<CardContainer />
-		<CardContainer />
+		<CardComponent
+			v-for="pokemon in pokemonList"
+			v-bind:key="pokemon.id"
+			:item="pokemon"
+		/>
 	</div>
 </template>
 <style scoped lang="scss">
 .card_container {
 	margin-top: 2rem;
-	padding: 2rem;
 	display: grid;
 	row-gap: 2rem;
 	grid-template-columns: repeat(

@@ -26,5 +26,6 @@ body {
 	font-weight: 400;
 	line-height: 1.7;
 	color: $headline;
+	background-color: $background;
 }
 </style>

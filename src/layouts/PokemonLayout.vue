@@ -1,9 +1,5 @@
 <script setup>
 import PokedexSidebar from "@/components/PokedexSidebar/PokeSidebar.vue";
-// document.title = "Pokemon";
-const title = document.createElement("title");
-title.textContent = "Pokemon";
-document.head.appendChild(title);
 </script>
 
 <template>

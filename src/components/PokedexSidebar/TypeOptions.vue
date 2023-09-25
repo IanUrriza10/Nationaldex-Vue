@@ -1,34 +1,39 @@
 <script setup lang="ts">
-const types = [
-	"normal",
-	"fire",
-	"water",
-	"grass",
-	"electric",
-	"ice",
-	"fighting",
-	"poison",
-	"ground",
-	"flying",
-	"psychic",
-	"bug",
-	"rock",
-	"ghost",
-	"dark",
-	"dragon",
-	"steel",
-	"fairy",
-];
+import { types } from "./constants.ts";
+import { sidebarStore as SidebarStore } from "@/utils/stores/index.ts";
+
+const sidebarStore = SidebarStore();
+const { setOptions, setType } = sidebarStore;
+
+const handleBack = (e: MouseEvent) => {
+	e.preventDefault();
+	setOptions(0);
+};
+
+const handleSetType = (e: MouseEvent) => {
+	e.preventDefault();
+	if (e.target instanceof Element) {
+		const type = parseInt(e.target.getAttribute("data-value") ?? "0");
+		setType(type);
+	}
+};
 </script>
 <template>
 	<div class="selection--type">
-		<div class="selection__option--back animate-button">Type</div>
-		<div class="selection--type__grid animate-button">
+		<div
+			class="selection__option--back animate-button"
+			:onclick="handleBack"
+		>
+			Type
+		</div>
+		<div class="selection--type__grid">
 			<div
 				v-for="(temp, index) in types"
 				:key="index"
-				class="selection__option--type"
+				class="selection__option--type animate-button"
 				:class="'type-' + temp"
+				:data-value="index + 1"
+				:onclick="handleSetType"
 			>
 				{{ temp }}
 			</div>

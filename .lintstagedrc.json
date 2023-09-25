@@ -1,6 +1,6 @@
 {
     "*.{vue,js,ts}": [
         "prettier --write",
-        "eslint"
+        "yarn run lint"
     ]
 }

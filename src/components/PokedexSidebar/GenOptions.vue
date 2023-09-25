@@ -1,25 +1,38 @@
 <script setup lang="ts">
-const generation = [
-	"Gen I",
-	"Gen II",
-	"Gen III",
-	"Gen IV",
-	"Gen V",
-	"Gen VI",
-	"Gen VII",
-	"Gen VIII",
-	"Gen IX",
-];
+import { generation } from "./constants.ts";
+import { sidebarStore as SidebarStore } from "@/utils/stores/index.ts";
+
+const sidebarStore = SidebarStore();
+const { setOptions, setGeneration } = sidebarStore;
+const handleBack = (e: MouseEvent) => {
+	e.preventDefault();
+	setOptions(0);
+};
+
+const handleSetGeneration = (e: MouseEvent) => {
+	e.preventDefault();
+	if (e.target instanceof Element) {
+		const generation = parseInt(e.target.getAttribute("data-value") ?? "0");
+		setGeneration(generation);
+	}
+};
 </script>
 <template>
 	<div class="selection--type">
-		<div class="selection__option--back">Type</div>
+		<div
+			class="selection__option--back"
+			:onclick="handleBack"
+		>
+			Type
+		</div>
 		<div class="selection--type__grid">
 			<div
 				v-for="(temp, index) in generation"
 				:key="index"
 				class="selection__option--gen animate-button"
 				:class="'type-' + temp"
+				:data-value="index + 1"
+				:onclick="handleSetGeneration"
 			>
 				{{ temp }}
 			</div>
