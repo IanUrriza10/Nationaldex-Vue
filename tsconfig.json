@@ -34,7 +34,8 @@
 		"paths": {
 			"@/*": ["./src/*"]
 		},
-		"allowImportingTsExtensions": true
+		"allowImportingTsExtensions": true,
+		"skipLibCheck": true
 	},
 	"include": [
 		"src/**/*.vue",
@@ -43,5 +44,5 @@
 		"src/**/*.d.ts",
 		"src/**/*.tsx"
 	],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules", "./src/utils/**/*.ts"]
 }

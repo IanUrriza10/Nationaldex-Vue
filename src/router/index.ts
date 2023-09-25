@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 import MainPage from "@/views/MainPage.vue";
-import SubPage from "@/views/SubPage.vue";
+import PokemonPage from "@/views/PokemonPage.vue";
 
 const routes = [
 	{
@@ -9,9 +9,13 @@ const routes = [
 		component: MainPage,
 	},
 	{
-		path: "/about",
-		name: "About",
-		component: SubPage,
+		path: "/pokemon",
+		redirect: { name: "Pokemon List" },
+	},
+	{
+		path: "/pokemon/:id",
+		name: "Pokemon Page",
+		component: PokemonPage,
 	},
 ];
 

@@ -3,7 +3,6 @@ import { onBeforeMount, ref, watch } from "vue";
 import PokemonLayout from "@/layouts/PokemonLayout.vue";
 import SearchBar from "@/components/MainPage/SearchBar.vue";
 import DropdownBar from "@/components/MainPage/DropdownBar.vue";
-import CardContainer from "@/components/MainPage/CardContainer.vue";
 import { usePokemonSearch } from "../composables/usePokemonSearch.ts";
 import { debounce } from "lodash";
 import { sort as options } from "@/components/PokedexSidebar/constants.ts";
@@ -51,7 +50,10 @@ watch(
 					/>
 				</div>
 			</div>
-			<CardContainer :pokemon-list="data.pokemonList" />
+			<CardContai
+				ner
+				:pokemon-list="data.pokemonList"
+			/>
 			<div
 				class="loadmore"
 				@click="search"
