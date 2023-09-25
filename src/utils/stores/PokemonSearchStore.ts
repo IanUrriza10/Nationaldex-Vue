@@ -54,7 +54,7 @@ export const pokemonSearchStore = defineStore({
 			this.$state.data.query.name = newName;
 			this.$state.data.offset = 0;
 		},
-		setSort(option: { id?: string; name?: string }) {
+		setSort(option: { id: string } | { name: string }) {
 			this.$state.data.query.orderBy = option;
 		},
 		resetOffset() {
