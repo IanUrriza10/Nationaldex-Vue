@@ -37,7 +37,7 @@ const unpackData = (result: PokemonDescriptionQuery) => {
 	};
 };
 
-type PokemonNav = PokemonDescriptionQuery["next"];
+export type PokemonNav = PokemonDescriptionQuery["next"];
 type PokemonMeta = PokemonDescriptionQuery["pokemon_v2_pokemon"];
 type PokemonFlavorText =
 	PokemonDescriptionQuery["pokemon_v2_versiongroup_aggregate"];

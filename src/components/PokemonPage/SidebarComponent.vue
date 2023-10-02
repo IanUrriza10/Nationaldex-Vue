@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from "vue-router";
-import { watch } from "vue";
 const router = useRouter();
 const route = useRoute();
 
@@ -11,9 +10,6 @@ const isActive = (text: string) => {
 const handleClick = (temp: string) => {
 	router.replace({ query: { view: temp } });
 };
-watch(route, () => {
-	console.log(route.query?.view);
-});
 </script>
 <template>
 	<div class="sidebar--container">
