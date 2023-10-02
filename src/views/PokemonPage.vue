@@ -8,6 +8,7 @@ import { stringToPosInt } from "@/utils/index.ts";
 import TextsContainer from "@/components/PokemonPage/TextsContainer.vue";
 import PokemonNav from "@/components/PokemonPage/PokemonNav.vue";
 import PokemonMeta from "@/components/PokemonPage/PokemonMeta.vue";
+import StatContainer from "@/components/PokemonPage/Stats/StatContainer.vue";
 
 const route = useRoute();
 const id = computed(() => stringToPosInt(route.params.id as string));
@@ -33,6 +34,7 @@ const isActive = (text: string) => {
 				:texts="data?.curr.flavorTexts"
 				v-if="isActive('description')"
 			/>
+			<StatContainer v-if="isActive('stats')" />
 		</div>
 	</PokemonLayout>
 </template>
