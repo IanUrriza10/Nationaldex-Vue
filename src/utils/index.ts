@@ -14,3 +14,12 @@ export const idToImgRoute = (id: number) => {
 // 		}, delay);
 // 	};
 // };
+
+export const stringToPosInt = (id: string) => {
+	const result = parseInt(id);
+	return isNaN(result) ? 0 : Math.abs(result);
+};
+
+export const dashToSpace = (text: string) => {
+	return text.replace(/-/g, " ");
+};

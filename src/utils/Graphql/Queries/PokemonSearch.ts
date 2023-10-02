@@ -1,8 +1,10 @@
 import { gql } from "@apollo/client/core";
 import { Pokemon_Types } from "./fragments/types.ts";
+import { National_Number } from "./fragments/nationalnumber.ts";
 
 export const PokemonSearch = gql`
 	${Pokemon_Types}
+	${National_Number}
 	query PokemonSearch(
 		$name: String = ""
 		$pokemonSpecy: pokemon_v2_pokemonspecies_bool_exp = {}
@@ -24,11 +26,7 @@ export const PokemonSearch = gql`
 			id
 			name
 			...PokemonTypesFragment
-			pokemon_v2_pokemonspecy {
-				pokemon_v2_pokemondexnumbers(limit: 2) {
-					pokedex_number
-				}
-			}
+			...PokemonNationalNumberFragment
 		}
 		pokemon_v2_pokemon_aggregate(
 			order_by: $orderBy

@@ -61,7 +61,6 @@ export const pokemonSearchStore = defineStore({
 			this.$state.data.offset = 0;
 		},
 		resetList() {
-			console.log("reset");
 			this.$state.data.pokemonList = [];
 			this.$state.data.aggregate = 0;
 		},
