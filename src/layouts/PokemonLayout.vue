@@ -1,7 +1,10 @@
-<script setup></script>
+<script setup>
+import Sidebar from "@/components/PokemonPage/SidebarComponent.vue";
+</script>
 
 <template>
 	<div class="layout">
+		<Sidebar />
 		<div class="content">
 			<slot></slot>
 		</div>
