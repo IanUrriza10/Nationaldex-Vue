@@ -1,12 +1,58 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRouter, useRoute } from "vue-router";
+import { watch } from "vue";
+const router = useRouter();
+const route = useRoute();
+
+const isActive = (text: string) => {
+	const selected = route.query?.view ?? "description";
+	return selected === text ? "option--active" : "";
+};
+const handleClick = (temp: string) => {
+	router.replace({ query: { view: temp } });
+};
+watch(route, () => {
+	console.log(route.query?.view);
+});
+</script>
 <template>
 	<div class="sidebar--container">
 		<div class="sidebar">
-			<div class="option option--active">Description</div>
-			<div class="option">Stats</div>
-			<div class="option">Moves</div>
-			<div class="option">More Info</div>
-			<div class="option">Evolution Chart</div>
+			<div
+				class="option"
+				:class="isActive('description')"
+				@click="handleClick('description')"
+			>
+				Description
+			</div>
+			<div
+				class="option"
+				:class="isActive('stats')"
+				@click="handleClick('stats')"
+			>
+				Stats
+			</div>
+			<div
+				class="option"
+				:class="isActive('moves')"
+				@click="handleClick('moves')"
+			>
+				Moves
+			</div>
+			<div
+				class="option"
+				:class="isActive('evolution')"
+				@click="handleClick('evolution')"
+			>
+				Evolution Chart
+			</div>
+			<div
+				class="option"
+				:class="isActive('others')"
+				@click="handleClick('others')"
+			>
+				More Info
+			</div>
 		</div>
 	</div>
 </template>
@@ -28,7 +74,6 @@
 .option {
 	text-align: left;
 	padding: 0 4rem 0 4rem;
-	// gap: 0.25rem;
 	cursor: pointer;
 	&--active {
 		font-weight: $font-bold;

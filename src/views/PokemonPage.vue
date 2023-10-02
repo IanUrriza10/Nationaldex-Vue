@@ -107,8 +107,8 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 					</div>
 				</div>
 			</div>
+			<TextsContainer :texts="data?.curr.flavorTexts" />
 		</div>
-		<TextsContainer :texts="data?.curr.flavorTexts" />
 	</PokemonLayout>
 </template>
 <style scoped lang="scss">

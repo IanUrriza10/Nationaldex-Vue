@@ -18,8 +18,6 @@ const props = defineProps({
 </template>
 <style scoped lang="scss">
 .container {
-	width: 100%;
-	padding: 1rem;
 	display: flex;
 	flex-direction: column;
 	gap: 2rem;
