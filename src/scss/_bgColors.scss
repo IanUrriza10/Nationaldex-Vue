@@ -55,28 +55,28 @@ $eggBg: (
 
 // GAMES
 $gameBg: (
-	red: #{$game-red},
-	blue: #{$game-blue},
-	yellow: #{$game-yellow},
-	gold: #{$game-gold},
-	silver: #{$game-silver},
+	"red": #{$game-red},
+	"blue": #{$game-blue},
+	"yellow": #{$game-yellow},
+	"gold": #{$game-gold},
+	"silver": #{$game-silver},
 	crystal: #{$game-crystal},
-	ruby: #{$game-ruby},
+	"ruby": #{$game-ruby},
 	sapphire: #{$game-sapphire},
 	emerald: #{$game-emerald},
 	diamond: #{$game-diamond},
 	pearl: #{$game-pearl},
 	platinum: #{$game-platinum},
-	black: #{$game-black},
-	white: #{$game-white},
-	x: #{$game-x},
-	y: #{$game-y},
+	"black": #{$game-black},
+	"white": #{$game-white},
+	"x": #{$game-x},
+	"y": #{$game-y},
 	sun: #{$game-sun},
 	moon: #{$game-moon},
 	sword: #{$game-sword},
 	shield: #{$game-shield},
 	scarlet: #{$game-scarlet},
-	violet: #{$game-violet},
+	"violet": #{$game-violet},
 	colosseum: #{$game-colosseum},
 	xd: #{$game-xd},
 	the-isle-of-armor: #{$game-isle},
@@ -97,3 +97,9 @@ $gameBg: (
 	shining-pearl: #{$game-spearl},
 	legends-arceus: #{$game-arceus},
 );
+
+@each $game, $color in $gameBg {
+	.game-#{$game} {
+		background-color: $color;
+	}
+}

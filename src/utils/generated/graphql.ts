@@ -57039,13 +57039,6 @@ export type PokemonSearchQuery = {
 		__typename?: "pokemon_v2_pokemon";
 		id: number;
 		name: string;
-		pokemon_v2_pokemonspecy?: {
-			__typename?: "pokemon_v2_pokemonspecies";
-			pokemon_v2_pokemondexnumbers: Array<{
-				__typename?: "pokemon_v2_pokemondexnumber";
-				pokedex_number: number;
-			}>;
-		} | null;
 		pokemon_v2_pokemontypes: Array<{
 			__typename?: "pokemon_v2_pokemontype";
 			pokemon_v2_type?: {
@@ -57053,6 +57046,13 @@ export type PokemonSearchQuery = {
 				name: string;
 			} | null;
 		}>;
+		pokemon_v2_pokemonspecy?: {
+			__typename?: "pokemon_v2_pokemonspecies";
+			pokemon_v2_pokemondexnumbers: Array<{
+				__typename?: "pokemon_v2_pokemondexnumber";
+				pokedex_number: number;
+			}>;
+		} | null;
 	}>;
 	pokemon_v2_pokemon_aggregate: {
 		__typename?: "pokemon_v2_pokemon_aggregate";
@@ -57146,7 +57146,7 @@ export type PokemonTypesFragmentFragment = {
 export const PokemonNationalNumberFragmentFragmentDoc = gql`
 	fragment PokemonNationalNumberFragment on pokemon_v2_pokemon {
 		pokemon_v2_pokemonspecy {
-			pokemon_v2_pokemondexnumbers(limit: 1) {
+			pokemon_v2_pokemondexnumbers(limit: 2) {
 				pokedex_number
 			}
 		}
@@ -57318,11 +57318,7 @@ export const PokemonSearchDocument = gql`
 			id
 			name
 			...PokemonTypesFragment
-			pokemon_v2_pokemonspecy {
-				pokemon_v2_pokemondexnumbers(limit: 2) {
-					pokedex_number
-				}
-			}
+			...PokemonNationalNumberFragment
 		}
 		pokemon_v2_pokemon_aggregate(
 			order_by: $orderBy
@@ -57339,6 +57335,7 @@ export const PokemonSearchDocument = gql`
 		}
 	}
 	${PokemonTypesFragmentFragmentDoc}
+	${PokemonNationalNumberFragmentFragmentDoc}
 `;
 
 /**

@@ -1,10 +1,7 @@
-<script setup>
-import PokedexSidebar from "@/components/PokedexSidebar/PokeSidebar.vue";
-</script>
+<script setup></script>
 
 <template>
 	<div class="layout">
-		<PokedexSidebar />
 		<div class="content">
 			<slot></slot>
 		</div>

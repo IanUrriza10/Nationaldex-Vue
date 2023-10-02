@@ -2,18 +2,16 @@
 const props = defineProps({
 	type: {
 		type: String,
-		placeholder: "Normal",
 		default: "Normal",
 	},
 });
-const { type = "Normal" } = props;
 </script>
 <template>
 	<div
 		class="type"
-		:class="`type-${type}`"
+		:class="`type-${props.type}`"
 	>
-		{{ type }}
+		{{ props.type ?? "Normal" }}
 	</div>
 </template>
 <style scoped lang="scss">
