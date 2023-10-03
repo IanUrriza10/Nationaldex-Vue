@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import StatTable from "./StatTable.vue";
+
+const tempValues = [95, 65, 65, 110, 130, 60];
 </script>
 <template>
 	<div class="container">
-		<StatTable />
+		<StatTable :stats="tempValues" />
 	</div>
 </template>
 <style scoped lang="scss">
