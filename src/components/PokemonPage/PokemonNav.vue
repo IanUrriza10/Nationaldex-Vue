@@ -21,7 +21,7 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 	<div class="nav">
 		<div
 			class="nav__both nav__left"
-			v-if="props.next?.id ?? 0"
+			v-if="props.prev?.id ?? 0"
 			@click="router.push(`/pokemon/${props.prev?.id}`)"
 		>
 			<div class="nav__icon">

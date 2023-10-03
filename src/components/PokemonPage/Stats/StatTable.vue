@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import { dashToSpace } from "@/utils/index.ts";
+import { toRef } from "vue";
+
+type Props = {
+	stats: number[];
+};
+const props = defineProps<Props>();
+
+const stats = toRef(props.stats);
+const barNum = 26;
 
 const attributes = [
 	"hp",
@@ -21,13 +30,17 @@ const attributes = [
 			<div class="row__values">
 				<div class="row__graph">
 					<div
-						v-for="i in [...Array(16).keys()]"
+						v-for="i in [...Array(barNum).keys()]"
 						:key="i"
 						class="cell"
-						:class="`${att} ${i < 10 ? 'colored' : ''}`"
+						:class="`${att} ${
+							i < (stats[index] / 255) * barNum ? 'colored' : ''
+						}`"
 					></div>
 				</div>
-				<div class="row__value">(255)</div>
+				<div class="row__value">
+					{{ stats[index] }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -47,8 +60,10 @@ const attributes = [
 			text-transform: capitalize;
 		}
 		&__values {
-			gap: 2rem;
 			display: flex;
+		}
+		&__value {
+			width: 5rem;
 		}
 		&__graph {
 			display: flex;
