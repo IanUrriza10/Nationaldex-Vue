@@ -68,7 +68,7 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 			</div>
 			<div class="nav__image">
 				<img
-					v-if="props.prev?.id ?? 0"
+					v-if="props.next?.id ?? 0"
 					:src="`http://${imgServer}${idToImgRoute(
 						props.next?.id ?? 0
 					)}`"

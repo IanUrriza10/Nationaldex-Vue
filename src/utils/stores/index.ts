@@ -1,3 +1,4 @@
 import { pokemonSearchStore } from "./PokemonSearchStore.ts";
 import { sidebarStore } from "./SidebarStore.ts";
-export { pokemonSearchStore, sidebarStore };
+import { pokemonDescStore } from "./PokemonDescStore.ts";
+export { pokemonSearchStore, sidebarStore, pokemonDescStore };

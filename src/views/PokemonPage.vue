@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { computed } from "vue";
+import { computed, watchEffect, onBeforeMount } from "vue";
 import PokemonLayout from "@/layouts/PokemonLayout.vue";
 import Navbar from "@/components/common/NavbarComponent.vue";
 import { usePokemonDesc } from "@/composables/usePokemonDesc.ts";
@@ -12,30 +12,55 @@ import StatContainer from "@/components/PokemonPage/Stats/StatContainer.vue";
 
 const route = useRoute();
 const id = computed(() => stringToPosInt(route.params.id as string));
-const { data } = usePokemonDesc(id);
-
+const { nav, meta, flavorText, initialLoad, queryFlavortext } =
+	usePokemonDesc(id);
 const isActive = (text: string) => {
 	const selected = route.query?.view ?? "description";
 	return selected === text ? "option--active" : "";
 };
+
+onBeforeMount(() => {
+	initialLoad();
+});
+
+watchEffect(() => {
+	switch (route.query?.view ?? "") {
+		case "stats":
+			console.log("stats");
+			break;
+		case "moves":
+			console.log("moves");
+			break;
+		case "evolution":
+			console.log("evolution");
+			break;
+		case "others":
+			console.log("others");
+			break;
+		default:
+			console.log("description");
+			queryFlavortext();
+	}
+});
 </script>
 <template>
 	<PokemonLayout>
 		<Navbar />
 		<div class="content">
 			<PokemonNav
-				:next="data?.next"
-				:prev="data?.prev"
+				:next="nav?.next"
+				:prev="nav?.prev"
 			/>
-			<PokemonMeta :meta="data?.curr.meta" />
+			<PokemonMeta :meta="meta" />
 
 			<!-- Content  -->
 			<TextsContainer
-				:texts="data?.curr.flavorTexts"
+				:texts="flavorText"
 				v-if="isActive('description')"
 			/>
 			<StatContainer v-if="isActive('stats')" />
 		</div>
+		<!-- <TextsContainer :texts="data?.curr.flavorTexts" /> -->
 	</PokemonLayout>
 </template>
 <style scoped lang="scss">
