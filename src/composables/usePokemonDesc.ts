@@ -1,15 +1,24 @@
-import { ComputedRef, computed, watch } from "vue";
-import { useQuery } from "@vue/apollo-composable";
-import { PokemonDescriptionQuery } from "../utils/generated/graphql.ts";
-import { PokemonDescription } from "../utils/Graphql/Queries/PokemonDescription.ts";
+import { ComputedRef, Ref, computed, watch } from "vue";
+import { useLazyQuery } from "@vue/apollo-composable";
 import { groupBy, Dictionary } from "lodash";
 import { GenerationFlavorText } from "@/utils/types/pokemonDesc.ts";
+import { pokemonDescStore as descStore } from "@/utils/stores/index.ts";
+import {
+	PokemonNavQuery,
+	PokemonMetaQuery,
+	PokemonFlavortextQuery,
+} from "@/utils/generated/graphql.ts";
+import {
+	PokemonNav,
+	PokemonMeta,
+	PokemonFlavortext,
+} from "@/utils/Graphql/Queries/index.ts";
+import { storeToRefs } from "pinia";
 
 export const usePokemonDesc = (id: ComputedRef<number>) => {
-	const data = computed(() => {
-		return result.value ? unpackData(result.value) : undefined;
-	});
-
+	const store = descStore();
+	const { nav, meta, flavorText } = storeToRefs(store);
+	const { setNav, setMeta, setFlavorText } = store;
 	const variables = computed(() => {
 		return {
 			prevId: id.value - 1,
@@ -17,31 +26,76 @@ export const usePokemonDesc = (id: ComputedRef<number>) => {
 			nextId: id.value + 1,
 		};
 	});
-	const { result, refetch } = useQuery<PokemonDescriptionQuery>(
-		PokemonDescription,
-		variables.value
-	);
 
-	watch(id, () => {
-		refetch(variables.value);
+	// Queries
+	const {
+		result: navData,
+		load: loadNav,
+		refetch: refetchNav,
+	} = useLazyQuery<PokemonNavQuery>(PokemonNav, {
+		nextId: variables.value.nextId,
+		prevId: variables.value.prevId,
+	});
+	const {
+		result: metaData,
+		load: loadMeta,
+		refetch: refetchMeta,
+	} = useLazyQuery<PokemonMetaQuery>(PokemonMeta, {
+		id: variables.value.id,
+	});
+	const {
+		result: flavorTextData,
+		load: loadFlavorText,
+		refetch: refetchFlavorText,
+	} = useLazyQuery<PokemonFlavortextQuery>(PokemonFlavortext, {
+		id: variables.value.id,
 	});
 
-	return { data };
+	watch(id, () => {
+		refetchNav({
+			nextId: variables.value.nextId,
+			prevId: variables.value.prevId,
+		});
+		refetchMeta({
+			id: variables.value.id,
+		});
+	});
+
+	watch(metaData, () => {
+		setMeta(processMeta(metaData));
+	});
+
+	watch(navData, () => {
+		setNav(processNav(navData));
+	});
+	watch(flavorTextData, () => {
+		setFlavorText(processFlavortext(flavorTextData));
+	});
+
+	const initialLoad = () => {
+		loadNav();
+		loadMeta();
+	};
+
+	const queryFlavortext = () => {
+		loadFlavorText(PokemonFlavortext, { id: variables.value.id }) ||
+			refetchFlavorText({ id: variables.value.id });
+	};
+
+	return { nav, meta, flavorText, initialLoad, queryFlavortext };
 };
 
-const unpackData = (result: PokemonDescriptionQuery) => {
+// PokeNav
+export type PokemonNavT = PokemonNavQuery["next"];
+const processNav = (navData: Ref<PokemonNavQuery | undefined>) => {
 	return {
-		prev: getNav(result.prev),
-		curr: getMain(result),
-		next: getNav(result.next),
+		prev: unpackNav(navData?.value?.prev),
+		next: unpackNav(navData?.value?.next),
 	};
 };
 
-export type PokemonNav = PokemonDescriptionQuery["next"];
-type PokemonMeta = PokemonDescriptionQuery["pokemon_v2_pokemon"];
-type PokemonFlavorText =
-	PokemonDescriptionQuery["pokemon_v2_versiongroup_aggregate"];
-const getNav = (result: PokemonNav) => {
+const unpackNav = (result: PokemonNavT | undefined) => {
+	if (result === undefined) return {};
 	if (result.length === 0) return {};
 
 	return {
@@ -53,14 +107,13 @@ const getNav = (result: PokemonNav) => {
 	};
 };
 
-const getMain = (result: PokemonDescriptionQuery) => {
-	return {
-		meta: parseMeta(result.pokemon_v2_pokemon),
-		flavorTexts: parseFlavorText(result.pokemon_v2_versiongroup_aggregate),
-	};
+// PokeMeta
+export type PokemonMetaT = PokemonMetaQuery["pokemon_v2_pokemon"];
+const processMeta = (metaData: Ref<PokemonMetaQuery | undefined>) => {
+	return parseMeta(metaData.value?.pokemon_v2_pokemon);
 };
-
-const parseMeta = (result: PokemonMeta) => {
+const parseMeta = (result: PokemonMetaT | undefined) => {
+	if (result == undefined) return {};
 	return {
 		id: result[0].id,
 		name: result[0].name,
@@ -75,7 +128,20 @@ const parseMeta = (result: PokemonMeta) => {
 				.pokedex_number,
 	};
 };
-const parseFlavorText = (result: PokemonFlavorText) => {
+
+// Flavor Texts
+export type PokemonFlavortextT =
+	PokemonFlavortextQuery["pokemon_v2_versiongroup_aggregate"];
+const processFlavortext = (
+	flavorData: Ref<PokemonFlavortextQuery | undefined>
+) => {
+	return parseFlavorText(
+		flavorData?.value?.pokemon_v2_versiongroup_aggregate
+	);
+};
+
+const parseFlavorText = (result: PokemonFlavortextT | undefined) => {
+	if (result === undefined) return {};
 	const cleaned = result.nodes.map(item => {
 		return {
 			generation_id: item.generation_id,
