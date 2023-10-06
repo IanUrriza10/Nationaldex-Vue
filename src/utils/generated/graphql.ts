@@ -57086,47 +57086,41 @@ export type PokemonStatsQuery = {
 	__typename?: "query_root";
 	pokemon_v2_pokemon: Array<{
 		__typename?: "pokemon_v2_pokemon";
-		id: number;
-		name: string;
-		pokemon_v2_pokemonstats: Array<{
+		stats: Array<{
 			__typename?: "pokemon_v2_pokemonstat";
 			base_stat: number;
 		}>;
-		pokemon_v2_pokemonabilities: Array<{
+		abilities: Array<{
 			__typename?: "pokemon_v2_pokemonability";
 			is_hidden: boolean;
-			pokemon_v2_ability?: {
+			ability?: {
 				__typename?: "pokemon_v2_ability";
 				name: string;
-				pokemon_v2_abilityeffecttexts: Array<{
+				effect: Array<{
 					__typename?: "pokemon_v2_abilityeffecttext";
-					effect: string;
-					pokemon_v2_language?: {
-						__typename?: "pokemon_v2_language";
-						id: number;
-					} | null;
+					text: string;
 				}>;
 			} | null;
 		}>;
-		pokemon_v2_pokemonspecy?: {
+		specy?: {
 			__typename?: "pokemon_v2_pokemonspecies";
-			pokemon_v2_pokemonegggroups: Array<{
+			eggGroups: Array<{
 				__typename?: "pokemon_v2_pokemonegggroup";
-				pokemon_v2_egggroup?: {
+				eggGroup?: {
 					__typename?: "pokemon_v2_egggroup";
 					name: string;
 				} | null;
 			}>;
 		} | null;
-		pokemon_v2_pokemontypes: Array<{
+		types: Array<{
 			__typename?: "pokemon_v2_pokemontype";
-			pokemon_v2_type?: {
+			type?: {
 				__typename?: "pokemon_v2_type";
 				name: string;
-				pokemonV2TypeefficaciesByTargetTypeId: Array<{
+				efficacies: Array<{
 					__typename?: "pokemon_v2_typeefficacy";
 					damage_factor: number;
-					pokemon_v2_type?: {
+					type?: {
 						__typename?: "pokemon_v2_type";
 						name: string;
 					} | null;
@@ -57598,38 +57592,35 @@ export type PokemonSearchQueryCompositionFunctionResult =
 export const PokemonStatsDocument = gql`
 	query PokemonStats($id: Int) {
 		pokemon_v2_pokemon(where: { id: { _eq: $id } }) {
-			id
-			name
-			pokemon_v2_pokemonstats {
+			stats: pokemon_v2_pokemonstats {
 				base_stat
 			}
-			pokemon_v2_pokemonabilities(where: { pokemon_id: { _eq: $id } }) {
-				pokemon_v2_ability {
+			abilities: pokemon_v2_pokemonabilities(
+				where: { pokemon_id: { _eq: $id } }
+			) {
+				ability: pokemon_v2_ability {
 					name
-					pokemon_v2_abilityeffecttexts(
+					effect: pokemon_v2_abilityeffecttexts(
 						where: { language_id: { _eq: 9 } }
 					) {
-						effect
-						pokemon_v2_language {
-							id
-						}
+						text: effect
 					}
 				}
 				is_hidden
 			}
-			pokemon_v2_pokemonspecy {
-				pokemon_v2_pokemonegggroups {
-					pokemon_v2_egggroup {
+			specy: pokemon_v2_pokemonspecy {
+				eggGroups: pokemon_v2_pokemonegggroups {
+					eggGroup: pokemon_v2_egggroup {
 						name
 					}
 				}
 			}
-			pokemon_v2_pokemontypes {
-				pokemon_v2_type {
+			types: pokemon_v2_pokemontypes {
+				type: pokemon_v2_type {
 					name
-					pokemonV2TypeefficaciesByTargetTypeId {
+					efficacies: pokemonV2TypeefficaciesByTargetTypeId {
 						damage_factor
-						pokemon_v2_type {
+						type: pokemon_v2_type {
 							name
 						}
 					}

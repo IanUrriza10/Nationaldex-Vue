@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { Ability } from "../types/pokemonDesc.ts";
 const defaultState = {
 	nav: {
 		next: {
@@ -20,6 +21,15 @@ const defaultState = {
 		types: [],
 	},
 	flavorText: {},
+	stat: {
+		abilities: {
+			visible: [] as Ability[],
+			hidden: [] as Ability[],
+		},
+		eggGroups: [] as string[],
+		resistances: [] as Array<{ multiplier: number; name: string }>,
+		stats: [] as number[],
+	},
 };
 
 export const pokemonDescStore = defineStore({
@@ -43,6 +53,11 @@ export const pokemonDescStore = defineStore({
 		setFlavorText(textData: any) {
 			this.$patch(state => {
 				state.flavorText = textData;
+			});
+		},
+		setStat(statData: any) {
+			this.$patch(state => {
+				state.stat = statData;
 			});
 		},
 	},

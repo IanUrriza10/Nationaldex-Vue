@@ -18,6 +18,7 @@ const props = defineProps({
 .type {
 	font-size: 1.7rem;
 	font-weight: $font-semibold;
+	cursor: default;
 	text-transform: uppercase;
 	min-width: 7.5rem;
 	padding: 0 0.25rem 0 0.25rem;

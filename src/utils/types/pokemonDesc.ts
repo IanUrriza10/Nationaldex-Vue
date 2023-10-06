@@ -8,3 +8,9 @@ export interface GenerationFlavorText {
 	generation_name: string | undefined;
 	flavorTexts: FlavorText[];
 }
+
+export interface Ability {
+	name: string;
+	effect: string;
+	isHidden: string;
+}

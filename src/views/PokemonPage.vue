@@ -12,7 +12,7 @@ import StatContainer from "@/components/PokemonPage/Stats/StatContainer.vue";
 
 const route = useRoute();
 const id = computed(() => stringToPosInt(route.params.id as string));
-const { nav, meta, flavorText, initialLoad, queryFlavortext } =
+const { nav, meta, stat, flavorText, initialLoad, queryFlavortext, queryStat } =
 	usePokemonDesc(id);
 const isActive = (text: string) => {
 	const selected = route.query?.view ?? "description";
@@ -27,6 +27,7 @@ watchEffect(() => {
 	switch (route.query?.view ?? "") {
 		case "stats":
 			console.log("stats");
+			queryStat();
 			break;
 		case "moves":
 			console.log("moves");
@@ -58,9 +59,11 @@ watchEffect(() => {
 				:texts="flavorText"
 				v-if="isActive('description')"
 			/>
-			<StatContainer v-if="isActive('stats')" />
+			<StatContainer
+				v-if="isActive('stats')"
+				:stat="stat"
+			/>
 		</div>
-		<!-- <TextsContainer :texts="data?.curr.flavorTexts" /> -->
 	</PokemonLayout>
 </template>
 <style scoped lang="scss">

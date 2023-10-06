@@ -36,6 +36,7 @@ const getClass = computed(() => {
 .game {
 	font-size: 1rem;
 	font-weight: $font-semibold;
+	cursor: default;
 	text-transform: uppercase;
 	min-width: 7.5rem;
 	padding: 0 0.25rem 0 0.25rem;
