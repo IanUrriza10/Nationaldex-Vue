@@ -22,7 +22,12 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 		<div
 			class="nav__both nav__left"
 			v-if="props.prev?.id ?? 0"
-			@click="router.push(`/pokemon/${props.prev?.id}`)"
+			@click="
+				router.push({
+					path: `/pokemon/${props.prev?.id}`,
+					query: router.currentRoute.value.query ?? {},
+				})
+			"
 		>
 			<div class="nav__icon">
 				<img
@@ -51,7 +56,12 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 		<div
 			class="nav__both nav__right"
 			v-if="props.next?.id ?? 0"
-			@click="router.push(`/pokemon/${props.next?.id}`)"
+			@click="
+				router.push({
+					path: `/pokemon/${props.next?.id}`,
+					query: router.currentRoute.value.query ?? {},
+				})
+			"
 		>
 			<div class="nav__icon">
 				<img

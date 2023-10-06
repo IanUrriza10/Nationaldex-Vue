@@ -7,18 +7,20 @@ import {
 	PokemonNavQuery,
 	PokemonMetaQuery,
 	PokemonFlavortextQuery,
+	PokemonStatsQuery,
 } from "@/utils/generated/graphql.ts";
 import {
 	PokemonNav,
 	PokemonMeta,
 	PokemonFlavortext,
+	PokemonStats,
 } from "@/utils/Graphql/Queries/index.ts";
 import { storeToRefs } from "pinia";
-
+import { map, zip } from "lodash";
 export const usePokemonDesc = (id: ComputedRef<number>) => {
 	const store = descStore();
-	const { nav, meta, flavorText } = storeToRefs(store);
-	const { setNav, setMeta, setFlavorText } = store;
+	const { nav, meta, flavorText, stat } = storeToRefs(store);
+	const { setNav, setMeta, setFlavorText, setStat } = store;
 	const variables = computed(() => {
 		return {
 			prevId: id.value - 1,
@@ -43,13 +45,14 @@ export const usePokemonDesc = (id: ComputedRef<number>) => {
 	} = useLazyQuery<PokemonMetaQuery>(PokemonMeta, {
 		id: variables.value.id,
 	});
-	const {
-		result: flavorTextData,
-		load: loadFlavorText,
-		refetch: refetchFlavorText,
-	} = useLazyQuery<PokemonFlavortextQuery>(PokemonFlavortext, {
-		id: variables.value.id,
-	});
+	const { result: flavorTextData, load: loadFlavorText } =
+		useLazyQuery<PokemonFlavortextQuery>(PokemonFlavortext, {
+			id: variables.value.id,
+		});
+	const { result: statData, load: loadStat } =
+		useLazyQuery<PokemonStatsQuery>(PokemonStats, {
+			id: variables.value.id,
+		});
 
 	watch(id, () => {
 		refetchNav({
@@ -64,12 +67,14 @@ export const usePokemonDesc = (id: ComputedRef<number>) => {
 	watch(metaData, () => {
 		setMeta(processMeta(metaData));
 	});
-
 	watch(navData, () => {
 		setNav(processNav(navData));
 	});
 	watch(flavorTextData, () => {
 		setFlavorText(processFlavortext(flavorTextData));
+	});
+	watch(statData, () => {
+		setStat(processStat(statData));
 	});
 
 	const initialLoad = () => {
@@ -78,11 +83,21 @@ export const usePokemonDesc = (id: ComputedRef<number>) => {
 	};
 
 	const queryFlavortext = () => {
-		loadFlavorText(PokemonFlavortext, { id: variables.value.id }) ||
-			refetchFlavorText({ id: variables.value.id });
+		loadFlavorText(PokemonFlavortext, { id: variables.value.id });
+	};
+	const queryStat = () => {
+		loadStat(PokemonStats, { id: variables.value.id });
 	};
 
-	return { nav, meta, flavorText, initialLoad, queryFlavortext };
+	return {
+		nav,
+		meta,
+		flavorText,
+		stat,
+		initialLoad,
+		queryFlavortext,
+		queryStat,
+	};
 };
 
 // PokeNav
@@ -157,4 +172,57 @@ const parseFlavorText = (result: PokemonFlavortextT | undefined) => {
 	return groupBy(cleaned, "generation_id") as Dictionary<
 		GenerationFlavorText[]
 	>;
+};
+
+// Stats
+export type PokemonStatsT = PokemonStatsQuery["pokemon_v2_pokemon"];
+const processStat = (statData: Ref<PokemonStatsQuery | undefined>) => {
+	return parseStat(statData.value?.pokemon_v2_pokemon);
+};
+
+const parseStat = (pokemon: PokemonStatsT | undefined) => {
+	if (pokemon == undefined) return {};
+	const { stats, abilities, specy, types } = pokemon[0];
+
+	const parsedAbilities = groupBy(
+		abilities.map(ability => ({
+			name: ability.ability?.name,
+			effect: ability.ability?.effect?.[0].text,
+			isHidden: ability.is_hidden ? "hidden" : "visible",
+		})),
+		"isHidden"
+	);
+
+	const eggGroups = specy?.eggGroups.map(group => {
+		return group.eggGroup?.name;
+	});
+
+	const resistance = types.map(type => {
+		return type.type?.efficacies.map(eff => {
+			return {
+				multiplier: eff.damage_factor / 100,
+				name: eff.type?.name,
+			};
+		});
+	});
+	let doubleResistance;
+	if (resistance.length > 1) {
+		doubleResistance = map(
+			zip(resistance[0], resistance[1]),
+			([res1, res2]) => {
+				return {
+					multiplier:
+						(res1?.multiplier ?? 1) * (res2?.multiplier ?? 1),
+					name: res1?.name,
+				};
+			}
+		);
+	}
+
+	return {
+		stats: stats.map(stat => stat.base_stat),
+		abilities: parsedAbilities,
+		eggGroups: eggGroups,
+		resistances: doubleResistance ?? resistance[0],
+	};
 };

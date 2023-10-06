@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { dashToSpace } from "@/utils/index.ts";
-import { toRef } from "vue";
 
 type Props = {
 	stats: number[];
 };
 const props = defineProps<Props>();
 
-const stats = toRef(props.stats);
 const barNum = 26;
 
 const attributes = [
@@ -34,12 +32,14 @@ const attributes = [
 						:key="i"
 						class="cell"
 						:class="`${att} ${
-							i < (stats[index] / 255) * barNum ? 'colored' : ''
+							i < (props.stats?.[index] / 255) * barNum
+								? 'colored'
+								: ''
 						}`"
 					></div>
 				</div>
 				<div class="row__value">
-					{{ stats[index] }}
+					{{ props.stats?.[index] ?? 0 }}
 				</div>
 			</div>
 		</div>

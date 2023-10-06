@@ -11,7 +11,17 @@ const httpLink = createHttpLink({
 });
 
 // Cache implementation
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+	typePolicies: {
+		Query: {
+			fields: {
+				Pokemon_V2_Pokemonspecies: {
+					merge: true,
+				},
+			},
+		},
+	},
+});
 
 // Create the apollo client
 export const apolloClient = new ApolloClient({
