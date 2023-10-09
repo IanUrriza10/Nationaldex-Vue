@@ -2,9 +2,10 @@ export const padDexNumber = (id: number) => {
 	return id.toString().padStart(4, "0");
 };
 
-export const idToImgRoute = (id: number) => {
+export const idToPokemonImgRoute = (id: number) => {
 	return `/sprites/pokemon/other/official-artwork/${id}.png`;
 };
+
 // export const debounce = (fn = () => {}, delay = 500) => {
 // 	let timeout: NodeJS.Timeout;
 // 	return (...args: []) => {

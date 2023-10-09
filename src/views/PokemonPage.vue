@@ -9,6 +9,7 @@ import TextsContainer from "@/components/PokemonPage/TextsContainer.vue";
 import PokemonNav from "@/components/PokemonPage/PokemonNav.vue";
 import PokemonMeta from "@/components/PokemonPage/PokemonMeta.vue";
 import StatContainer from "@/components/PokemonPage/Stats/StatContainer.vue";
+import EvolutionContainer from "@/components/PokemonPage/Evolution/EvolutionContainer.vue";
 
 const route = useRoute();
 const id = computed(() => stringToPosInt(route.params.id as string));
@@ -63,6 +64,7 @@ watchEffect(() => {
 				v-if="isActive('stats')"
 				:stat="stat"
 			/>
+			<EvolutionContainer v-if="isActive('evolution')" />
 		</div>
 	</PokemonLayout>
 </template>
