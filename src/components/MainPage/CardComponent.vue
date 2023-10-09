@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PokeCard } from "@/utils/types/mainPage.ts";
-import { idToImgRoute, padDexNumber } from "../../utils/index.ts";
+import { idToPokemonImgRoute, padDexNumber } from "../../utils/index.ts";
 import TypeComponent from "@/components/common/TypeComponent.vue";
 import router from "@/router/index.ts";
 
@@ -26,7 +26,9 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 	>
 		<div class="card__image">
 			<img
-				:src="`http://${imgServer}${idToImgRoute(props.item.id)}`"
+				:src="`http://${imgServer}${idToPokemonImgRoute(
+					props.item.id
+				)}`"
 				:alt="`${props.item.name}__image`"
 			/>
 		</div>

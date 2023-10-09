@@ -226,3 +226,5 @@ const parseStat = (pokemon: PokemonStatsT | undefined) => {
 		resistances: doubleResistance ?? resistance[0],
 	};
 };
+
+// Evolution

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType } from "vue";
-import { idToImgRoute, padDexNumber } from "@/utils/index.ts";
+import { idToPokemonImgRoute, padDexNumber } from "@/utils/index.ts";
 import { useRouter } from "vue-router";
 
 interface PokemonNav {
@@ -45,8 +45,8 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 			<div class="nav__image">
 				<img
 					v-if="props.prev?.id ?? 0"
-					:src="`http://${imgServer}${idToImgRoute(
-						props.prev?.id ?? 0
+					:src="`http://${imgServer}${idToPokemonImgRoute(
+						props.prev?.id ?? 132
 					)}`"
 					:alt="`${props.prev?.name}__image`"
 				/>
@@ -79,8 +79,8 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 			<div class="nav__image">
 				<img
 					v-if="props.next?.id ?? 0"
-					:src="`http://${imgServer}${idToImgRoute(
-						props.next?.id ?? 0
+					:src="`http://${imgServer}${idToPokemonImgRoute(
+						props.next?.id ?? 132
 					)}`"
 					:alt="`${props.next?.name}__image`"
 				/>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { idToImgRoute, padDexNumber } from "@/utils/index.ts";
+import { idToPokemonImgRoute, padDexNumber } from "@/utils/index.ts";
 import TypeComponent from "@/components/common/TypeComponent.vue";
 import { PropType } from "vue";
 const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
@@ -20,7 +20,9 @@ const props = defineProps({
 	<div class="meta">
 		<div class="meta__image">
 			<img
-				:src="`http://${imgServer}${idToImgRoute(props.meta?.id ?? 0)}`"
+				:src="`http://${imgServer}${idToPokemonImgRoute(
+					props.meta?.id ?? 132
+				)}`"
 				:alt="`${props.meta?.name}__image`"
 			/>
 		</div>
