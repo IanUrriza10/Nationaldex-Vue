@@ -1,33 +1,37 @@
 <script setup lang="ts">
-import { padDexNumber } from "@/utils/index.ts";
-import PopupComponent from "@/components/common/PopupComponent.vue";
+import { idToPokemonImgRoute, padDexNumber } from "@/utils/index.ts";
+import { EvoPokemon, EvoRequirements } from "@/utils/types/pokemonDesc.ts";
+import EvolutionCondition from "./EvolutionCondition.vue";
 const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
+
+interface PropsI {
+	evolution: {
+		base: EvoPokemon;
+		requirements: EvoRequirements;
+		evolution: EvoPokemon;
+	};
+}
+defineProps<PropsI>();
 </script>
 <template>
 	<div class="evolution">
 		<div class="evolution__base pokemon">
-			<div class="pokemon__image"></div>
-			<div class="pokemon__number">#{{ padDexNumber(1) }}</div>
-			<div class="pokemon__name">bulbasaur</div>
+			<div class="pokemon__image">
+				<img
+					v-if="evolution.base?.id ?? 0"
+					:src="`http://${imgServer}${idToPokemonImgRoute(
+						evolution.base?.id ?? 132
+					)}`"
+					:alt="`${evolution.base?.name}__image`"
+				/>
+			</div>
+			<div class="pokemon__number">
+				#{{ padDexNumber(evolution.base.id) }}
+			</div>
+			<div class="pokemon__name">{{ evolution.base.name }}</div>
 		</div>
 		<div class="evolution__condition">
-			<PopupComponent>
-				<template v-slot:main>
-					<div class="evolution__condition__icon">
-						<img
-							:src="`http://${imgServer}/sprites/items/rare-candy.png`"
-						/>
-					</div>
-				</template>
-				<template v-slot:popup>
-					<div class="">
-						Lorem ipsum dolor sit amet, consectetur adipisicing
-						elit. Accusamus eaque aspernatur, alias in quisquam,
-						soluta totam exercitationem dicta quae amet fugiat velit
-						tenetur eum iste id. Vitae qui ullam atque.
-					</div>
-				</template>
-			</PopupComponent>
+			<EvolutionCondition :props="evolution.requirements" />
 
 			<div class="evolution__condition__arrow">
 				<img
@@ -37,9 +41,19 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 			</div>
 		</div>
 		<div class="evolution__evolution pokemon">
-			<div class="pokemon__image"></div>
-			<div class="pokemon__number">#{{ padDexNumber(1) }}</div>
-			<div class="pokemon__name">ivysaur</div>
+			<div class="pokemon__image">
+				<img
+					v-if="evolution.evolution?.id ?? 0"
+					:src="`http://${imgServer}${idToPokemonImgRoute(
+						evolution.evolution?.id ?? 132
+					)}`"
+					:alt="`${evolution.evolution?.name}__image`"
+				/>
+			</div>
+			<div class="pokemon__number">
+				#{{ padDexNumber(evolution.evolution.id) }}
+			</div>
+			<div class="pokemon__name">{{ evolution.evolution.name }}</div>
 		</div>
 	</div>
 </template>
@@ -50,21 +64,13 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 	display: flex;
 	gap: 1rem;
 	justify-content: center;
-	** .evolution__base + .evolution__condition + .evolution__evolution {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		width: 30%;
-	}
-	&__condition {
-		&__icon {
-			& * {
-				width: 5rem;
-				height: 5rem;
-			}
-		}
+	border: 0.5rem;
+	border-color: red;
+	border-style: solid;
+	vertical-align: middle;
+	align-items: center;
 
+	&__condition {
 		&__arrow {
 			& * {
 				width: 3rem;
@@ -79,12 +85,14 @@ const imgServer = import.meta.env.VITE_IMAGE_SERVER_URL;
 	&__image {
 		width: 10rem;
 		height: 10rem;
-		background-color: red;
 		& img {
 			height: 100%;
 			width: 100%;
 			object-fit: contain;
 		}
+	}
+	&__number {
+		font-size: 1.3rem;
 	}
 	&__name {
 		text-transform: capitalize;

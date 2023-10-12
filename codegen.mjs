@@ -11,14 +11,7 @@ const config = {
 
 	generates: {
 		"./src/utils/generated/graphql.ts": {
-			plugins: [
-				"typescript",
-				"typescript-operations",
-				"typescript-vue-apollo",
-			],
-			config: {
-				vueApolloComposableImportFrom: "vue",
-			},
+			plugins: ["typescript", "typescript-operations"],
 		},
 		"./graphql.schema.json": {
 			plugins: ["introspection"],

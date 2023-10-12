@@ -1,6 +1,3 @@
-import gql from "graphql-tag";
-import * as VueApolloComposable from "vue";
-import * as VueCompositionApi from "@vue/composition-api";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -23,7 +20,6 @@ export type Incremental<T> =
 				? T[P]
 				: never;
 	  };
-export type ReactiveFunction<TParam> = () => TParam;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
 	ID: { input: string; output: string };
@@ -56943,6 +56939,81 @@ export type Subscription_RootPokemon_V2_Versionname_StreamArgs = {
 	where?: InputMaybe<Pokemon_V2_Versionname_Bool_Exp>;
 };
 
+export type PokemonEvolutionsQueryVariables = Exact<{
+	id?: InputMaybe<Scalars["Int"]["input"]>;
+}>;
+
+export type PokemonEvolutionsQuery = {
+	__typename?: "query_root";
+	pokemon: Array<{
+		__typename?: "pokemon_v2_pokemon";
+		spec?: {
+			__typename?: "pokemon_v2_pokemonspecies";
+			baseId?: number | null;
+			evoChain?: {
+				__typename?: "pokemon_v2_evolutionchain";
+				spec2: Array<{
+					__typename?: "pokemon_v2_pokemonspecies";
+					id: number;
+					name: string;
+					evolves_from_species_id?: number | null;
+					requirements: Array<{
+						__typename?: "pokemon_v2_pokemonevolution";
+						needRain: boolean;
+						needLevel?: number | null;
+						needHappiness?: number | null;
+						needBeauty?: number | null;
+						needAffection?: number | null;
+						needTime?: string | null;
+						needHeldItem?: {
+							__typename?: "pokemon_v2_item";
+							id: number;
+							name: string;
+						} | null;
+						needGender?: {
+							__typename?: "pokemon_v2_gender";
+							id: number;
+							name: string;
+						} | null;
+						needUseItem?: {
+							__typename?: "pokemon_v2_item";
+							id: number;
+							name: string;
+						} | null;
+						needLocation?: {
+							__typename?: "pokemon_v2_location";
+							name: string;
+							id: number;
+						} | null;
+						needMove?: {
+							__typename?: "pokemon_v2_move";
+							name: string;
+							moveType?: {
+								__typename?: "pokemon_v2_type";
+								name: string;
+							} | null;
+						} | null;
+						needTrade?: {
+							__typename?: "pokemon_v2_pokemonspecies";
+							id: number;
+							name: string;
+						} | null;
+						needMoveType?: {
+							__typename?: "pokemon_v2_type";
+							name: string;
+						} | null;
+						trigger?: {
+							__typename?: "pokemon_v2_evolutiontrigger";
+							name: string;
+							id: number;
+						} | null;
+					}>;
+				}>;
+			} | null;
+		} | null;
+	}>;
+};
+
 export type PokemonFlavortextQueryVariables = Exact<{
 	id?: InputMaybe<Scalars["Int"]["input"]>;
 }>;
@@ -57151,558 +57222,3 @@ export type PokemonTypesFragmentFragment = {
 		} | null;
 	}>;
 };
-
-export const PokemonNationalNumberFragmentFragmentDoc = gql`
-	fragment PokemonNationalNumberFragment on pokemon_v2_pokemon {
-		pokemon_v2_pokemonspecy {
-			pokemon_v2_pokemondexnumbers(limit: 2) {
-				pokedex_number
-			}
-		}
-	}
-`;
-export const PokemonTypesFragmentFragmentDoc = gql`
-	fragment PokemonTypesFragment on pokemon_v2_pokemon {
-		pokemon_v2_pokemontypes {
-			pokemon_v2_type {
-				name
-			}
-		}
-	}
-`;
-export const PokemonFlavortextDocument = gql`
-	query PokemonFlavortext($id: Int) {
-		pokemon_v2_versiongroup_aggregate {
-			nodes {
-				generation_id
-				versions: pokemon_v2_versions {
-					flavor_texts: pokemon_v2_pokemonspeciesflavortexts(
-						where: {
-							language_id: { _eq: 9 }
-							pokemon_v2_pokemonspecy: {
-								pokemon_v2_pokemons: { id: { _eq: $id } }
-							}
-						}
-					) {
-						flavor_text
-					}
-					name
-				}
-				gen: pokemon_v2_generation {
-					gen_arr: pokemon_v2_generationnames(
-						where: { language_id: { _eq: 9 } }
-					) {
-						name
-					}
-				}
-			}
-		}
-	}
-`;
-
-/**
- * __usePokemonFlavortextQuery__
- *
- * To run a query within a Vue component, call `usePokemonFlavortextQuery` and pass it any options that fit your needs.
- * When your component renders, `usePokemonFlavortextQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param variables that will be passed into the query
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = usePokemonFlavortextQuery({
- *   id: // value for 'id'
- * });
- */
-export function usePokemonFlavortextQuery(
-	variables:
-		| PokemonFlavortextQueryVariables
-		| VueCompositionApi.Ref<PokemonFlavortextQueryVariables>
-		| ReactiveFunction<PokemonFlavortextQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonFlavortextQuery,
-				PokemonFlavortextQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonFlavortextQuery,
-					PokemonFlavortextQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonFlavortextQuery,
-					PokemonFlavortextQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useQuery<
-		PokemonFlavortextQuery,
-		PokemonFlavortextQueryVariables
-	>(PokemonFlavortextDocument, variables, options);
-}
-export function usePokemonFlavortextLazyQuery(
-	variables:
-		| PokemonFlavortextQueryVariables
-		| VueCompositionApi.Ref<PokemonFlavortextQueryVariables>
-		| ReactiveFunction<PokemonFlavortextQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonFlavortextQuery,
-				PokemonFlavortextQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonFlavortextQuery,
-					PokemonFlavortextQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonFlavortextQuery,
-					PokemonFlavortextQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useLazyQuery<
-		PokemonFlavortextQuery,
-		PokemonFlavortextQueryVariables
-	>(PokemonFlavortextDocument, variables, options);
-}
-export type PokemonFlavortextQueryCompositionFunctionResult =
-	VueApolloComposable.UseQueryReturn<
-		PokemonFlavortextQuery,
-		PokemonFlavortextQueryVariables
-	>;
-export const PokemonMetaDocument = gql`
-	query PokemonMeta($id: Int) {
-		pokemon_v2_pokemon(where: { id: { _eq: $id } }) {
-			id
-			name
-			...PokemonTypesFragment
-			pokemon_v2_pokemonspecy {
-				pokemon_v2_pokemonspeciesnames(
-					where: { language_id: { _eq: 9 } }
-				) {
-					genus
-				}
-				pokemon_v2_pokemondexnumbers(limit: 1) {
-					pokedex_number
-				}
-			}
-		}
-	}
-	${PokemonTypesFragmentFragmentDoc}
-`;
-
-/**
- * __usePokemonMetaQuery__
- *
- * To run a query within a Vue component, call `usePokemonMetaQuery` and pass it any options that fit your needs.
- * When your component renders, `usePokemonMetaQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param variables that will be passed into the query
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = usePokemonMetaQuery({
- *   id: // value for 'id'
- * });
- */
-export function usePokemonMetaQuery(
-	variables:
-		| PokemonMetaQueryVariables
-		| VueCompositionApi.Ref<PokemonMetaQueryVariables>
-		| ReactiveFunction<PokemonMetaQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonMetaQuery,
-				PokemonMetaQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonMetaQuery,
-					PokemonMetaQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonMetaQuery,
-					PokemonMetaQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useQuery<
-		PokemonMetaQuery,
-		PokemonMetaQueryVariables
-	>(PokemonMetaDocument, variables, options);
-}
-export function usePokemonMetaLazyQuery(
-	variables:
-		| PokemonMetaQueryVariables
-		| VueCompositionApi.Ref<PokemonMetaQueryVariables>
-		| ReactiveFunction<PokemonMetaQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonMetaQuery,
-				PokemonMetaQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonMetaQuery,
-					PokemonMetaQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonMetaQuery,
-					PokemonMetaQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useLazyQuery<
-		PokemonMetaQuery,
-		PokemonMetaQueryVariables
-	>(PokemonMetaDocument, variables, options);
-}
-export type PokemonMetaQueryCompositionFunctionResult =
-	VueApolloComposable.UseQueryReturn<
-		PokemonMetaQuery,
-		PokemonMetaQueryVariables
-	>;
-export const PokemonNavDocument = gql`
-	query PokemonNav($prevId: Int, $nextId: Int) {
-		next: pokemon_v2_pokemon(where: { id: { _eq: $nextId } }) {
-			id
-			name
-			...PokemonNationalNumberFragment
-		}
-		prev: pokemon_v2_pokemon(where: { id: { _eq: $prevId } }) {
-			id
-			name
-			...PokemonNationalNumberFragment
-		}
-	}
-	${PokemonNationalNumberFragmentFragmentDoc}
-`;
-
-/**
- * __usePokemonNavQuery__
- *
- * To run a query within a Vue component, call `usePokemonNavQuery` and pass it any options that fit your needs.
- * When your component renders, `usePokemonNavQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param variables that will be passed into the query
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = usePokemonNavQuery({
- *   prevId: // value for 'prevId'
- *   nextId: // value for 'nextId'
- * });
- */
-export function usePokemonNavQuery(
-	variables:
-		| PokemonNavQueryVariables
-		| VueCompositionApi.Ref<PokemonNavQueryVariables>
-		| ReactiveFunction<PokemonNavQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonNavQuery,
-				PokemonNavQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonNavQuery,
-					PokemonNavQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonNavQuery,
-					PokemonNavQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useQuery<
-		PokemonNavQuery,
-		PokemonNavQueryVariables
-	>(PokemonNavDocument, variables, options);
-}
-export function usePokemonNavLazyQuery(
-	variables:
-		| PokemonNavQueryVariables
-		| VueCompositionApi.Ref<PokemonNavQueryVariables>
-		| ReactiveFunction<PokemonNavQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonNavQuery,
-				PokemonNavQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonNavQuery,
-					PokemonNavQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonNavQuery,
-					PokemonNavQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useLazyQuery<
-		PokemonNavQuery,
-		PokemonNavQueryVariables
-	>(PokemonNavDocument, variables, options);
-}
-export type PokemonNavQueryCompositionFunctionResult =
-	VueApolloComposable.UseQueryReturn<
-		PokemonNavQuery,
-		PokemonNavQueryVariables
-	>;
-export const PokemonSearchDocument = gql`
-	query PokemonSearch(
-		$name: String = ""
-		$pokemonSpecy: pokemon_v2_pokemonspecies_bool_exp = {}
-		$type: pokemon_v2_pokemontype_bool_exp = {}
-		$orderBy: [pokemon_v2_pokemon_order_by!]
-		$offset: Int = 0
-		$limit: Int = 10
-	) {
-		pokemon_v2_pokemon(
-			limit: $limit
-			order_by: $orderBy
-			offset: $offset
-			where: {
-				name: { _iregex: $name }
-				pokemon_v2_pokemonspecy: $pokemonSpecy
-				pokemon_v2_pokemontypes: $type
-			}
-		) {
-			id
-			name
-			...PokemonTypesFragment
-			...PokemonNationalNumberFragment
-		}
-		pokemon_v2_pokemon_aggregate(
-			order_by: $orderBy
-			where: {
-				name: { _iregex: $name }
-				pokemon_v2_pokemonspecy: $pokemonSpecy
-				pokemon_v2_pokemontypes: $type
-			}
-			offset: $offset
-		) {
-			aggregate {
-				count
-			}
-		}
-	}
-	${PokemonTypesFragmentFragmentDoc}
-	${PokemonNationalNumberFragmentFragmentDoc}
-`;
-
-/**
- * __usePokemonSearchQuery__
- *
- * To run a query within a Vue component, call `usePokemonSearchQuery` and pass it any options that fit your needs.
- * When your component renders, `usePokemonSearchQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param variables that will be passed into the query
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = usePokemonSearchQuery({
- *   name: // value for 'name'
- *   pokemonSpecy: // value for 'pokemonSpecy'
- *   type: // value for 'type'
- *   orderBy: // value for 'orderBy'
- *   offset: // value for 'offset'
- *   limit: // value for 'limit'
- * });
- */
-export function usePokemonSearchQuery(
-	variables:
-		| PokemonSearchQueryVariables
-		| VueCompositionApi.Ref<PokemonSearchQueryVariables>
-		| ReactiveFunction<PokemonSearchQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonSearchQuery,
-				PokemonSearchQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonSearchQuery,
-					PokemonSearchQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonSearchQuery,
-					PokemonSearchQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useQuery<
-		PokemonSearchQuery,
-		PokemonSearchQueryVariables
-	>(PokemonSearchDocument, variables, options);
-}
-export function usePokemonSearchLazyQuery(
-	variables:
-		| PokemonSearchQueryVariables
-		| VueCompositionApi.Ref<PokemonSearchQueryVariables>
-		| ReactiveFunction<PokemonSearchQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonSearchQuery,
-				PokemonSearchQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonSearchQuery,
-					PokemonSearchQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonSearchQuery,
-					PokemonSearchQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useLazyQuery<
-		PokemonSearchQuery,
-		PokemonSearchQueryVariables
-	>(PokemonSearchDocument, variables, options);
-}
-export type PokemonSearchQueryCompositionFunctionResult =
-	VueApolloComposable.UseQueryReturn<
-		PokemonSearchQuery,
-		PokemonSearchQueryVariables
-	>;
-export const PokemonStatsDocument = gql`
-	query PokemonStats($id: Int) {
-		pokemon_v2_pokemon(where: { id: { _eq: $id } }) {
-			stats: pokemon_v2_pokemonstats {
-				base_stat
-			}
-			abilities: pokemon_v2_pokemonabilities(
-				where: { pokemon_id: { _eq: $id } }
-			) {
-				ability: pokemon_v2_ability {
-					name
-					effect: pokemon_v2_abilityeffecttexts(
-						where: { language_id: { _eq: 9 } }
-					) {
-						text: effect
-					}
-				}
-				is_hidden
-			}
-			specy: pokemon_v2_pokemonspecy {
-				eggGroups: pokemon_v2_pokemonegggroups {
-					eggGroup: pokemon_v2_egggroup {
-						name
-					}
-				}
-			}
-			types: pokemon_v2_pokemontypes {
-				type: pokemon_v2_type {
-					name
-					efficacies: pokemonV2TypeefficaciesByTargetTypeId {
-						damage_factor
-						type: pokemon_v2_type {
-							name
-						}
-					}
-				}
-			}
-		}
-	}
-`;
-
-/**
- * __usePokemonStatsQuery__
- *
- * To run a query within a Vue component, call `usePokemonStatsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePokemonStatsQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param variables that will be passed into the query
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = usePokemonStatsQuery({
- *   id: // value for 'id'
- * });
- */
-export function usePokemonStatsQuery(
-	variables:
-		| PokemonStatsQueryVariables
-		| VueCompositionApi.Ref<PokemonStatsQueryVariables>
-		| ReactiveFunction<PokemonStatsQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonStatsQuery,
-				PokemonStatsQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonStatsQuery,
-					PokemonStatsQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonStatsQuery,
-					PokemonStatsQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useQuery<
-		PokemonStatsQuery,
-		PokemonStatsQueryVariables
-	>(PokemonStatsDocument, variables, options);
-}
-export function usePokemonStatsLazyQuery(
-	variables:
-		| PokemonStatsQueryVariables
-		| VueCompositionApi.Ref<PokemonStatsQueryVariables>
-		| ReactiveFunction<PokemonStatsQueryVariables> = {},
-	options:
-		| VueApolloComposable.UseQueryOptions<
-				PokemonStatsQuery,
-				PokemonStatsQueryVariables
-		  >
-		| VueCompositionApi.Ref<
-				VueApolloComposable.UseQueryOptions<
-					PokemonStatsQuery,
-					PokemonStatsQueryVariables
-				>
-		  >
-		| ReactiveFunction<
-				VueApolloComposable.UseQueryOptions<
-					PokemonStatsQuery,
-					PokemonStatsQueryVariables
-				>
-		  > = {}
-) {
-	return VueApolloComposable.useLazyQuery<
-		PokemonStatsQuery,
-		PokemonStatsQueryVariables
-	>(PokemonStatsDocument, variables, options);
-}
-export type PokemonStatsQueryCompositionFunctionResult =
-	VueApolloComposable.UseQueryReturn<
-		PokemonStatsQuery,
-		PokemonStatsQueryVariables
-	>;

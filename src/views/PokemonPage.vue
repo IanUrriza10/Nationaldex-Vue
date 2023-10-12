@@ -13,8 +13,17 @@ import EvolutionContainer from "@/components/PokemonPage/Evolution/EvolutionCont
 
 const route = useRoute();
 const id = computed(() => stringToPosInt(route.params.id as string));
-const { nav, meta, stat, flavorText, initialLoad, queryFlavortext, queryStat } =
-	usePokemonDesc(id);
+const {
+	nav,
+	meta,
+	stat,
+	flavorText,
+	evo,
+	initialLoad,
+	queryFlavortext,
+	queryStat,
+	queryEvo,
+} = usePokemonDesc(id);
 const isActive = (text: string) => {
 	const selected = route.query?.view ?? "description";
 	return selected === text ? "option--active" : "";
@@ -35,6 +44,7 @@ watchEffect(() => {
 			break;
 		case "evolution":
 			console.log("evolution");
+			queryEvo();
 			break;
 		case "others":
 			console.log("others");
@@ -64,7 +74,10 @@ watchEffect(() => {
 				v-if="isActive('stats')"
 				:stat="stat"
 			/>
-			<EvolutionContainer v-if="isActive('evolution')" />
+			<EvolutionContainer
+				v-if="isActive('evolution')"
+				:evo="evo"
+			/>
 		</div>
 	</PokemonLayout>
 </template>

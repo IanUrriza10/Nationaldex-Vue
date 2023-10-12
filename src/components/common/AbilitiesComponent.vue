@@ -2,10 +2,10 @@
 import { dashToSpace } from "@/utils/index.ts";
 import { Ability } from "@/utils/types/pokemonDesc.ts";
 import PopupComponent from "@/components/common/PopupComponent.vue";
-type PropsT = {
+interface PropsI {
 	ability: Ability;
-};
-const props = defineProps<PropsT>();
+}
+const props = defineProps<PropsI>();
 </script>
 <template>
 	<div class="ability">

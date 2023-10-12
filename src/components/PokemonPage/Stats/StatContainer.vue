@@ -4,7 +4,7 @@ import StatTable from "./StatTable.vue";
 import AbilitiesComponent from "@/components/common/AbilitiesComponent.vue";
 import { Ability } from "@/utils/types/pokemonDesc.ts";
 import TypeComponent from "@/components/common/TypeComponent.vue";
-type PropsT = {
+interface PropsI {
 	stat: {
 		abilities: {
 			visible: Ability[];
@@ -17,8 +17,8 @@ type PropsT = {
 		}>;
 		stats: number[];
 	};
-};
-const props = defineProps<PropsT>();
+}
+const props = defineProps<PropsI>();
 </script>
 <template>
 	<div class="container">
@@ -26,14 +26,17 @@ const props = defineProps<PropsT>();
 			<div class="graph__title">Base Stats</div>
 			<StatTable :stats="stat?.stats" />
 		</div>
-		<div class="misc">
+		<div
+			class="misc"
+			v-if="stat.abilities !== undefined"
+		>
 			<div class="abilities">
 				<div class="abilities__title">Abilities</div>
 				<div class="abilities__container">
 					<div class="abilities__container__visible">
 						<AbilitiesComponent
-							v-for="(ability, index) in props.stat.abilities
-								.visible"
+							v-for="(ability, index) in props?.stat?.abilities
+								?.visible"
 							:key="index"
 							:ability="ability"
 						/>

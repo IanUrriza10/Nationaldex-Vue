@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { Ability } from "../types/pokemonDesc.ts";
+import { EvoRequirements } from "../types/pokemonDesc.ts";
 const defaultState = {
 	nav: {
 		next: {
@@ -30,6 +31,17 @@ const defaultState = {
 		resistances: [] as Array<{ multiplier: number; name: string }>,
 		stats: [] as number[],
 	},
+	evo: Array<{
+		base: {
+			id: number;
+			name: string;
+		};
+		requirements: EvoRequirements;
+		evolution: {
+			id: number;
+			name: string;
+		};
+	}>,
 };
 
 export const pokemonDescStore = defineStore({
@@ -58,6 +70,11 @@ export const pokemonDescStore = defineStore({
 		setStat(statData: any) {
 			this.$patch(state => {
 				state.stat = statData;
+			});
+		},
+		setEvo(evoData: any) {
+			this.$patch(state => {
+				state.evo = evoData;
 			});
 		},
 	},

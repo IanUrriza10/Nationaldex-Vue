@@ -1,6 +1,6 @@
 import { ComputedRef, Ref, computed, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
-import { groupBy, Dictionary } from "lodash";
+import { groupBy, Dictionary, omitBy, map, zip, omit } from "lodash";
 import { GenerationFlavorText } from "@/utils/types/pokemonDesc.ts";
 import { pokemonDescStore as descStore } from "@/utils/stores/index.ts";
 import {
@@ -8,19 +8,20 @@ import {
 	PokemonMetaQuery,
 	PokemonFlavortextQuery,
 	PokemonStatsQuery,
+	PokemonEvolutionsQuery,
 } from "@/utils/generated/graphql.ts";
 import {
 	PokemonNav,
 	PokemonMeta,
 	PokemonFlavortext,
 	PokemonStats,
+	PokemonEvolutions,
 } from "@/utils/Graphql/Queries/index.ts";
 import { storeToRefs } from "pinia";
-import { map, zip } from "lodash";
 export const usePokemonDesc = (id: ComputedRef<number>) => {
 	const store = descStore();
-	const { nav, meta, flavorText, stat } = storeToRefs(store);
-	const { setNav, setMeta, setFlavorText, setStat } = store;
+	const { nav, meta, flavorText, stat, evo } = storeToRefs(store);
+	const { setNav, setMeta, setFlavorText, setStat, setEvo } = store;
 	const variables = computed(() => {
 		return {
 			prevId: id.value - 1,
@@ -54,6 +55,11 @@ export const usePokemonDesc = (id: ComputedRef<number>) => {
 			id: variables.value.id,
 		});
 
+	const { result: evoData, load: loadEvo } =
+		useLazyQuery<PokemonEvolutionsQuery>(PokemonEvolutions, {
+			id: variables.value.id,
+		});
+
 	watch(id, () => {
 		refetchNav({
 			nextId: variables.value.nextId,
@@ -76,6 +82,9 @@ export const usePokemonDesc = (id: ComputedRef<number>) => {
 	watch(statData, () => {
 		setStat(processStat(statData));
 	});
+	watch(evoData, () => {
+		setEvo(processEvo(evoData));
+	});
 
 	const initialLoad = () => {
 		loadNav();
@@ -88,15 +97,20 @@ export const usePokemonDesc = (id: ComputedRef<number>) => {
 	const queryStat = () => {
 		loadStat(PokemonStats, { id: variables.value.id });
 	};
+	const queryEvo = () => {
+		loadEvo(PokemonEvolutions, { id: variables.value.id });
+	};
 
 	return {
 		nav,
 		meta,
 		flavorText,
 		stat,
+		evo,
 		initialLoad,
 		queryFlavortext,
 		queryStat,
+		queryEvo,
 	};
 };
 
@@ -228,3 +242,61 @@ const parseStat = (pokemon: PokemonStatsT | undefined) => {
 };
 
 // Evolution
+
+export type PokemonEvoT = PokemonEvolutionsQuery["pokemon"];
+
+const processEvo = (evoData: Ref<PokemonEvolutionsQuery | undefined>) => {
+	return groupEvolution(parseEvo(evoData.value?.pokemon?.[0]));
+};
+
+const parseEvo = (data: PokemonEvoT[0] | undefined) => {
+	if (data == undefined) return [];
+	const evoChain = data?.spec?.evoChain?.spec2;
+	const parsed = evoChain?.map(pokemon => {
+		return {
+			id: pokemon.id,
+			name: pokemon.name,
+			baseId: pokemon.evolves_from_species_id,
+			requirements: omitBy(pokemon.requirements?.[0], attributes => {
+				return (
+					attributes == undefined ||
+					attributes == null ||
+					attributes == false ||
+					attributes == ""
+				);
+			}),
+		};
+	});
+	console.log(parsed);
+	return parsed;
+};
+
+type PokemonEvo = {
+	id: number;
+	name: string;
+	baseId: number | null | undefined;
+	requirements?: Dictionary<string | number | boolean | any>;
+};
+
+const groupEvolution = (pokemons: PokemonEvo[] | undefined) => {
+	const evolutionPairs = [] as any[];
+	const dictionary: Record<number, PokemonEvo> = {};
+	for (const pokemon of pokemons || []) {
+		dictionary[pokemon.id] = pokemon;
+	}
+	pokemons?.map(pokemon => {
+		if (pokemon.baseId == null) return;
+		evolutionPairs.push({
+			base: {
+				...omit(dictionary[pokemon.baseId], "requirements"),
+			},
+			requirements: {
+				...pokemon.requirements,
+			},
+			evolution: {
+				...omit(pokemon, "requirements"),
+			},
+		});
+	});
+	return evolutionPairs;
+};
